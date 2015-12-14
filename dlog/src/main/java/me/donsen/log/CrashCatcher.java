@@ -11,8 +11,9 @@ import java.io.Writer;
  */
 class CrashCatcher implements Thread.UncaughtExceptionHandler {
 
-    private Thread.UncaughtExceptionHandler mDefaultHandler;
     protected static final String TAG = "DefaultExceptionHandler";
+
+    private Thread.UncaughtExceptionHandler mDefaultHandler;
 
     private static CrashCatcher instance = new CrashCatcher();
 

@@ -9,15 +9,22 @@ import android.text.TextUtils;
 class Config {
 
     private static Context sGlobalContext;
+
     private static String sLogDir;
+
+    /**
+     * log files expired days
+     */
+    private static int EXPIRED_DAYS = 3;
 
     protected static Context getAppContext() {
         return sGlobalContext;
     }
 
-    protected static void init(Context context, String logDir) {
+    protected static void init(Context context, String logDir, int expiredDays) {
         sGlobalContext = context;
         sLogDir = logDir;
+        EXPIRED_DAYS = expiredDays;
         CrashCatcher.getInstance().init();
     }
 
@@ -34,4 +41,9 @@ class Config {
         }
         return Utils.getCrashLogPath(sLogDir);
     }
+
+    protected static int getExpiredDays() {
+        return EXPIRED_DAYS;
+    }
+
 }

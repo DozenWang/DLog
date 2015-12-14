@@ -12,6 +12,6 @@ public class MainApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        DLog.init(this, Constants.LOG_DIR);
+        DLog.init(this, Constants.LOG_DIR, Constants.DEBUG_LOG_EXPIRED_DAYS);
     }
 }

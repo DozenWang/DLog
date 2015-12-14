@@ -19,8 +19,14 @@ public class DLog {
 
     private static LEVEL LOG_LEVEL = LEVEL.INFO;
 
-    public static void init(Context context, String logDir) {
-        Config.init(context, logDir);
+    /**
+     * init DLog config arguements
+     * @param context
+     * @param logDir
+     * @param expiredDays
+     */
+    public static void init(Context context, String logDir, int expiredDays) {
+        Config.init(context, logDir, expiredDays);
     }
 
     public static void i(String tag, String msg) {

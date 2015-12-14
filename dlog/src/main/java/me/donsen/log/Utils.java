@@ -3,11 +3,15 @@ package me.donsen.log;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
+import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,6 +21,9 @@ import java.util.Date;
 class Utils {
 
     private static String TAG = Utils.class.getSimpleName();
+
+    private static SimpleDateFormat defaultDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+
 
     protected static void create(String path) {
         if (TextUtils.isEmpty(path)) {
@@ -36,10 +43,6 @@ class Utils {
     protected static void append(String path, String content) {
         if(TextUtils.isEmpty(path)) {
             throw new IllegalArgumentException("append path is null!!!");
-        }
-        File file = new File(path);
-        if(!file.exists()) {
-            create(path);
         }
         BufferedWriter bw = null;
         try {
@@ -92,8 +95,7 @@ class Utils {
         if(TextUtils.isEmpty(dir)) {
             throw new IllegalArgumentException("log dir is null");
         }
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-        String name = String.format("%1s.txt", dateFormatter.format(new Date()));
+        String name = String.format("%1s.txt", defaultDateFormatter.format(new Date()));
         return dir + name;
     }
 
@@ -115,6 +117,32 @@ class Utils {
             }
         }
         return "";
+    }
+
+    protected static void deleteExpiredFiles(File fileDir, final int expiredDays) {
+        if(fileDir == null || !fileDir.exists() || !fileDir.isDirectory()) {
+            throw new IllegalArgumentException(" fileDir is unavailable");
+        }
+        File[] oldFiles = fileDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                if (!filename.endsWith(".txt"))
+                    return false;
+
+                try {
+                    long date = defaultDateFormatter.parse(filename.substring(0, filename.length() - 4)).getTime();
+                    return (System.currentTimeMillis() - date > DateUtils.DAY_IN_MILLIS * expiredDays);
+                } catch (ParseException e) {
+                    return false;
+                }
+            }
+        });
+
+        if (oldFiles != null) {
+            for (File file : oldFiles) {
+                file.delete();
+            }
+        }
     }
 
 
