@@ -24,6 +24,7 @@ class Utils {
 
     private static SimpleDateFormat defaultDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
+    private static String LOG_NAME_SERPRATER = ":";
 
     protected static void create(String path) {
         if (TextUtils.isEmpty(path)) {
@@ -41,7 +42,7 @@ class Utils {
     }
 
     protected static void append(String path, String content) {
-        if(TextUtils.isEmpty(path)) {
+        if (TextUtils.isEmpty(path)) {
             throw new IllegalArgumentException("append path is null!!!");
         }
         BufferedWriter bw = null;
@@ -92,15 +93,15 @@ class Utils {
     }
 
     protected static String getLogPath(String dir) {
-        if(TextUtils.isEmpty(dir)) {
+        if (TextUtils.isEmpty(dir)) {
             throw new IllegalArgumentException("log dir is null");
         }
-        String name = String.format("%1s.txt", defaultDateFormatter.format(new Date()));
+        String name = String.format("%1s:%2s.txt", defaultDateFormatter.format(new Date()), getCurrentProcessName());
         return dir + name;
     }
 
     protected static String getCrashLogPath(String dir) {
-        if(TextUtils.isEmpty(dir)) {
+        if (TextUtils.isEmpty(dir)) {
             throw new IllegalArgumentException("log dir is null");
         }
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -120,7 +121,7 @@ class Utils {
     }
 
     protected static void deleteExpiredFiles(File fileDir, final int expiredDays) {
-        if(fileDir == null || !fileDir.exists() || !fileDir.isDirectory()) {
+        if (fileDir == null || !fileDir.exists() || !fileDir.isDirectory()) {
             throw new IllegalArgumentException(" fileDir is unavailable");
         }
         File[] oldFiles = fileDir.listFiles(new FilenameFilter() {
@@ -130,7 +131,8 @@ class Utils {
                     return false;
 
                 try {
-                    long date = defaultDateFormatter.parse(filename.substring(0, filename.length() - 4)).getTime();
+                    String[] dateTag = filename.split(LOG_NAME_SERPRATER);
+                    long date = defaultDateFormatter.parse(dateTag[0]).getTime();
                     return (System.currentTimeMillis() - date > DateUtils.DAY_IN_MILLIS * expiredDays);
                 } catch (ParseException e) {
                     return false;
