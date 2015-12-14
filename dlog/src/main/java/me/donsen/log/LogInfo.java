@@ -18,12 +18,36 @@ class LogInfo {
     static String versionName;
     static String processName;
 
+    public LogInfo() {
+        getEnvIfNeed();
+    }
+
     public LogInfo(String level, String tag, String text, String timestamp) {
         this.level = level;
         this.tag = tag;
         this.text = text;
         this.timestamp = timestamp;
         getEnvIfNeed();
+    }
+
+    public LogInfo setLevel(String level) {
+        this.level = level;
+        return this;
+    }
+
+    public LogInfo setTag(String tag) {
+        this.tag = tag;
+        return this;
+    }
+
+    public LogInfo setText(String text) {
+        this.tag = text;
+        return this;
+    }
+
+    public LogInfo setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+        return this;
     }
 
     private void getEnvIfNeed() {
