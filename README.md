@@ -11,3 +11,19 @@ The I/O operation is operating on worker thread, so it won't be block your UI th
 ###Usage
 You should call **DLog.init()** when your Application onCreate(). 
 Then you can call it anywhere when you want to write your log to sdcard.
+
+###Sample
+```
+public class MainApp extends Application {
+
+    private static final String TAG = MainApp.class.getSimpleName();
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DLog.init(this, Constants.LOG_DIR, Constants.DEBUG_LOG_EXPIRED_DAYS);
+
+        DLog.i(TAG, "MainApp onCreate...");
+    }
+}
+```
