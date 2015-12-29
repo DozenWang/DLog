@@ -41,7 +41,7 @@ class LogInfo {
     }
 
     public LogInfo setText(String text) {
-        this.tag = text;
+        this.text = text;
         return this;
     }
 
