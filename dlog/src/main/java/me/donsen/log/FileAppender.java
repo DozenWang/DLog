@@ -49,8 +49,8 @@ class FileAppender {
             File file = new File(path);
             if (!file.exists()) {
                 Utils.create(path);
-                Utils.deleteExpiredFiles(file.getParentFile(), Config.getExpiredDays());
             }
+            Utils.deleteExpiredFiles(file.getParentFile(), Config.getExpiredDays());
             Utils.append(path, text);
         }
     }
