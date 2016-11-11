@@ -24,7 +24,7 @@ class Utils {
 
     private static SimpleDateFormat defaultDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
-    private static String LOG_NAME_SERPRATER = ":";
+    private static String LOG_NAME_SERPRATER = "-";
 
     protected static void create(String path) {
         if (TextUtils.isEmpty(path)) {
@@ -96,7 +96,7 @@ class Utils {
         if (TextUtils.isEmpty(dir)) {
             throw new IllegalArgumentException("log dir is null");
         }
-        String name = String.format("%1s:%2s.txt", defaultDateFormatter.format(new Date()), getCurrentProcessName());
+        String name = String.format("%s%s%s.log", defaultDateFormatter.format(new Date()), LOG_NAME_SERPRATER, getCurrentProcessName().replaceAll(":", "_"));
         return dir + name;
     }
 
@@ -127,7 +127,7 @@ class Utils {
         File[] oldFiles = fileDir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-                if (!filename.endsWith(".txt"))
+                if (!filename.endsWith(".log"))
                     return false;
 
                 try {
